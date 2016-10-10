@@ -13,11 +13,6 @@ RANDOM_URL = 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag={}'
 
 class MainHandler(tornado.web.RequestHandler):
 
-    def _get_tag(self):
-        payload = json.loads(self.request.body.decode('utf-8'))
-        tag = payload['text']
-        return tag
-
     def _get_response(self, response):
         response_payload = json.loads(response.body.decode('utf-8'))
         image_url = response_payload['data']['image_url']
@@ -29,7 +24,7 @@ class MainHandler(tornado.web.RequestHandler):
 
     @gen.coroutine
     def post(self):
-        tag = self._get_tag()
+        tag = self.get_arguments('text')[0]
         http_client = AsyncHTTPClient()
         giphy_response = yield http_client.fetch(RANDOM_URL.format(tag))
         response = self._get_response(giphy_response)

@@ -9,7 +9,7 @@ from tornado import gen
 
 
 RANDOM_URL = 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag={}'
-TEXT = """{user_name} `{command} {tag}`
+TEXT = """{user_name}: `{command} {tag}`
 {image_url}"""
 
 
@@ -34,7 +34,7 @@ class MainHandler(tornado.web.RequestHandler):
 
     @gen.coroutine
     def post(self):
-        tag = self.get_arguments('text')[0]
+        tag = '+'.join(self.get_arguments('text')[0].split(' '))
         http_client = AsyncHTTPClient()
         giphy_response = yield http_client.fetch(RANDOM_URL.format(tag))
         response = self._get_response(giphy_response)

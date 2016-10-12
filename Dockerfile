@@ -5,5 +5,6 @@ RUN apk add --no-cache python3
 RUN /usr/bin/pip3 install tornado
 ADD giphornado.py /giphornado.py
 
-#ENTRYPOINT ash
+EXPOSE 8888
+
 CMD python3 giphornado.py
